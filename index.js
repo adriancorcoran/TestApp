@@ -1,7 +1,7 @@
 //  links
 /*
 auth url
-https://2a794ac4.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
+https://5bbafc2a.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
 */
 
 const dotenv = require('dotenv').config();
@@ -16,7 +16,7 @@ const request = require('request-promise');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products';
-const forwardingAddress = "https://2a794ac4.ngrok.io"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://5bbafc2a.ngrok.io"; // Replace this with your HTTPS Forwarding address
 
 app.get('/', (req, res) => {
   res.send('Hello Adrian\'s World!');
@@ -87,52 +87,96 @@ app.get('/shopify/callback', (req, res) => {
       // TODO
       // Use access token to make API call to 'shop' endpoint
 
+      //    ----------------------------------------------------------------------
+      //  get the shop
+      //    ----------------------------------------------------------------------
+/*
       const shopRequestUrl = 'https://' + shop + '/admin/shop.json';
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': accessToken,
       };
-/*
+
       request.get(shopRequestUrl, { headers: shopRequestHeaders })
       .then((shopResponse) => {
 
         //  get the data
-        var data  = JSON.parse(shopResponse);
+        var data    = JSON.parse(shopResponse);
         //  create message
-        var message= 'Getting shop id... ' + data.shop.id;
+        res.write('<p>Getting shop... ' + data.shop.name + '</p>');
+        res.write('<p>Found the shop :)</p>');
 
-        res.end(message);
+        console.log(shopResponse);
+        res.end(shopResponse);
+
       })
       .catch((error) => {
         res.status(error.statusCode).send(error.error.error_description);
       });
 */
+      //    ----------------------------------------------------------------------
+      //  get a product
+      //    ----------------------------------------------------------------------
+/*
+      const shopRequestUrl = 'https://' + shop + '/admin/products/12534054934.json';
+      const shopRequestHeaders = {
+        'X-Shopify-Access-Token': accessToken,
+      };
+
       request.get(shopRequestUrl, { headers: shopRequestHeaders })
       .then((shopResponse) => {
 
         //  get the data
-        var data  = JSON.parse(shopResponse);
+        var data    = JSON.parse(shopResponse);
         //  create message
-        var message= 'Getting shop... ' + data.shop.name;
+        res.write('<p>Getting product... ' + data.product.title + '</p>');
+        res.write('<p>Found the product :)</p>');
 
-/*
-        request.get(shopRequestUrl, { headers: shopRequestHeaders })
-        .then((shopResponse1) => {
+        console.log(shopResponse);
+        res.end(shopResponse);
 
-          //  get the data
-          var data1  = JSON.parse(shopResponse1);
-          //  create message
-          message += 'Getting shop id1... ' + data1.shop.id;
-        })
+      })
+      .catch((error) => {
+        res.status(error.statusCode).send(error.error.error_description);
+      });
 */
-        res.end(message);
+      //    ----------------------------------------------------------------------
+      //  put a product
+      //    ----------------------------------------------------------------------
+      const shopRequestUrl = 'https://' + shop + '/admin/products/12534054934.json';
+      const shopRequestHeaders = {
+        'X-Shopify-Access-Token': accessToken,
+      };
+      const productData = {
+        "product": {
+          "id": 12534054934,
+          "title": "New product title"
+        }
+      };
+
+      request.put(shopRequestUrl, { headers: shopRequestHeaders, json: productData } )
+      .then((shopResponse) => {
+
+        //  get the data
+        var data    = JSON.parse(shopResponse);
+        //  create message
+        //res.write('<p>Getting product... ' + data.product.title + '</p>');
+        //res.write('<p>Found the product :)</p>');
+
+        console.log(shopResponse);
+        res.end(shopResponse);
+
       })
       .catch((error) => {
         res.status(error.statusCode).send(error.error.error_description);
       });
 
+
+      //    ----------------------------------------------------------------------
       //  jQuery
-//      var $ = require("jquery");
+      //  var $ = require("jquery");
       console.log('hi');
+      //    ----------------------------------------------------------------------
+
 //    ----------------------------------------------------------------------
     })
     .catch((error) => {
