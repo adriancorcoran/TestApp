@@ -1,7 +1,7 @@
 //  links
 /*
 auth url
-https://b86556fd.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
+https://0371f514.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
 */
 
 const dotenv = require('dotenv').config();
@@ -16,7 +16,7 @@ const request = require('request-promise');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products,write_products';
-const forwardingAddress = "https://b86556fd.ngrok.io"; // Replace this with your HTTPS Forwarding address
+const forwardingAddress = "https://0371f514.ngrok.io"; // Replace this with your HTTPS Forwarding address
 
 app.get('/', (req, res) => {
   res.send('Hello Adrian\'s World!');
@@ -149,7 +149,7 @@ app.get('/shopify/callback', (req, res) => {
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': accessToken,
       };
-      var testNum = 14;
+      var testNum = 15;
       const productData = {
         "product": {
           "id": 12534054934,
