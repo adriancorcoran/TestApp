@@ -1,7 +1,7 @@
 //  links
 /*
 auth url
-https://5bbafc2a.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
+https://b86556fd.ngrok.io/shopify?shop=test-store-adrian-corcoran-01.myshopify.com
 */
 
 const dotenv = require('dotenv').config();
@@ -15,8 +15,8 @@ const request = require('request-promise');
 
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
-const scopes = 'read_products';
-const forwardingAddress = "https://5bbafc2a.ngrok.io"; // Replace this with your HTTPS Forwarding address
+const scopes = 'read_products,write_products';
+const forwardingAddress = "https://b86556fd.ngrok.io"; // Replace this with your HTTPS Forwarding address
 
 app.get('/', (req, res) => {
   res.send('Hello Adrian\'s World!');
@@ -113,10 +113,11 @@ app.get('/shopify/callback', (req, res) => {
         res.status(error.statusCode).send(error.error.error_description);
       });
 */
+/*
       //    ----------------------------------------------------------------------
       //  get a product
       //    ----------------------------------------------------------------------
-/*
+
       const shopRequestUrl = 'https://' + shop + '/admin/products/12534054934.json';
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': accessToken,
@@ -138,7 +139,9 @@ app.get('/shopify/callback', (req, res) => {
       .catch((error) => {
         res.status(error.statusCode).send(error.error.error_description);
       });
+
 */
+
       //    ----------------------------------------------------------------------
       //  put a product
       //    ----------------------------------------------------------------------
@@ -146,29 +149,39 @@ app.get('/shopify/callback', (req, res) => {
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': accessToken,
       };
+      var testNum = 14;
       const productData = {
         "product": {
           "id": 12534054934,
-          "title": "New product title"
-        }
+          "title": "New product title "+testNum,
+          "metafields": [
+                {
+                  "key": "new_key",
+                  "value": "new_value"+testNum,
+                  "value_type": "string",
+                  "namespace": "namespace"+testNum
+                }
+              ]
+          }
       };
 
       request.put(shopRequestUrl, { headers: shopRequestHeaders, json: productData } )
       .then((shopResponse) => {
 
         //  get the data
-        var data    = JSON.parse(shopResponse);
+        //var data    = JSON.parse(shopResponse);
         //  create message
-        //res.write('<p>Getting product... ' + data.product.title + '</p>');
+        res.write('<p>Changed the product title and metafield :)</p>');
+        //res.write('<p>Changed the product title to... ' + data.product.title + '</p>');
         //res.write('<p>Found the product :)</p>');
 
         console.log(shopResponse);
-        res.end(shopResponse);
+//        res.end(shopResponse);
 
-      })
-      .catch((error) => {
-        res.status(error.statusCode).send(error.error.error_description);
       });
+//      .catch((error) => {
+//        res.status(error.statusCode).send(error.error.error_description);
+//      });
 
 
       //    ----------------------------------------------------------------------
